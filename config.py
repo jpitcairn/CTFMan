@@ -11,6 +11,7 @@ class Config(object):
     HYPERVISOR = os.environ.get('HYPERVISOR')
     # proxmox host settings
     PROXMOX_HOST = os.environ.get('PROXMOX_HOST')
+    PROXMOX_NODE = os.environ.get('PROXMOX_NODE')
     PROXMOX_USER = os.environ.get('PROXMOX_USER')
     PROXMOX_TOKEN_NAME = os.environ.get('PROXMOX_TOKEN_NAME')
     PROXMOX_TOKEN_SECRET = os.environ.get('PROXMOX_TOKEN_SECRET')

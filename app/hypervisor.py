@@ -12,12 +12,12 @@ def get_virtual_machines():
 
 def start_virtual_machine(vmid):
     if hypervisor == 'proxmox':
-        return proxmox.nodes('pve').qemu(vmid).status.start.post()
+        return proxmox.nodes(app.config['PROXMOX_NODE']).qemu(vmid).status.start.post()
 
 def shutdown_virtual_machine(vmid):
     if hypervisor == 'proxmox':
-        return proxmox.nodes('pve').qemu(vmid).status.shutdown.post()
+        return proxmox.nodes(app.config['PROXMOX_NODE']).qemu(vmid).status.shutdown.post()
 
 def reset_virtual_machine(vmid):
     if hypervisor == 'proxmox':
-        return proxmox.nodes('pve').qemu(vmid).snapshot('default').rollback.post()
+        return proxmox.nodes(app.config['PROXMOX_NODE']).qemu(vmid).snapshot('default').rollback.post()
