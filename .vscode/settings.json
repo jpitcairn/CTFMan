@@ -1,0 +1,7 @@
+{
+    "python.terminal.activateEnvironment": true,
+    "files.associations": 
+        {
+        "*.html": "jinja-html"
+        }
+}

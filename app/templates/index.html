@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-table me-1"></i>
+                            Virtual Machines
+                        </div>
+                        <div class="card-body">
+                            <table id="datatablesSimple">
+                                <thead>
+                                    <tr>
+                                        <th>Virtual Machine ID</th>
+                                        <th>Name</th>
+                                        <th>Status</th>
+                                        <th>CPU Usage</th>
+                                        <th>Memory Usage</th>
+                                        <th>Uptime</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>Virtual Machine ID</th>
+                                        <th>Name</th>
+                                        <th>Status</th>
+                                        <th>CPU Usage</th>
+                                        <th>Memory Usage</th>
+                                        <th>Uptime</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    {% for vm in virtual_machines %}
+                                    <tr>
+                                        <td>{{ vm.vmid }}</td>
+                                        <td>{{ vm.name }}</td>
+                                        <td>{{ vm.status }}</td>
+                                        <td>{{ vm.cpu }}</td>
+                                        <td>{{ vm.mem }}</td>
+                                        <td>{{ (vm.uptime/86400)|round(2) }} Days</td>
+                                        <td width="25%">
+
+                                            <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                                                <div class="btn-group" role="group">
+                                                    <form action="{{ url_for('start_vm', vmid=vm.vmid) }}"
+                                                        method="post">
+                                                        {{ form.hidden_tag() }}
+                                                        {{ form.submit(value='Start', class='btn btn-success') }}
+                                                    </form>
+                                                </div>
+                                                <div class="btn-group" role="group">
+                                                    <form action="{{ url_for('shutdown_vm', vmid=vm.vmid) }}"
+                                                        method="post">
+                                                        {{ form.hidden_tag() }}
+                                                        {{ form.submit(value='Shutdown',class='btn btn-danger') }}
+                                                    </form>
+                                                </div>
+                                                <div class="btn-group" role="group">
+                                                    <form action="{{ url_for('reset_vm', vmid=vm.vmid) }}"
+                                                        method="post">
+                                                        {{ form.hidden_tag() }}
+                                                        {{ form.submit(value='Reset',class='btn btn-warning') }}
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+{% endblock %}
