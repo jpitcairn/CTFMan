@@ -4,7 +4,7 @@ CTF Control Panel
 ## Install
 
 ```
-git clone git@github.com:jpitcairn/CTFMan.git
+git clone https://github.com/jpitcairn/CTFMan.git
 cd CTFMan
 chmod +x *.sh
 ./setup.sh
