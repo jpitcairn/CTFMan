@@ -36,7 +36,7 @@
                     <li>
                         <hr class="dropdown-divider" />
                     </li>
-                    <li><a class="dropdown-item" href="#!">Logout</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a></li>
                 </ul>
             </li>
         </ul>
@@ -50,6 +50,10 @@
                         <a class="nav-link" href="{{ url_for('home') }}">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Virtual Machines
+                        </a>
+                        <a class="nav-link" href="{{ url_for('admin_users') }}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                            Users
                         </a>
                         <div class="sb-sidenav-menu-heading">CTF</div>
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
@@ -79,7 +83,7 @@
                 </div>
                 <div class="sb-sidenav-footer">
                     <div class="small">Logged in as:</div>
-                    {{ user.username }}
+                    {{ current_user.username }}
                 </div>
             </nav>
         </div>
