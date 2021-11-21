@@ -2,7 +2,7 @@
 
 {% block content %}
 
-                    <div class="card mb-4">
+<div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
                             Virtual Machines
@@ -75,4 +75,52 @@
                             </table>
                         </div>
                     </div>
+
+<div class="row">
+    <div class="col-xl-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-chart-area me-1"></i>
+                   Add Virtual Machine
+            </div>
+            <div class="card-body">
+            <form action="" method="POST">
+                {{ form.hidden_tag() }}
+
+                        {{ form.node.label}}
+                       {{ form.node(class='form-control')}}
+                       
+                        {{ form.vm_id.label }}
+                        {{ form.vm_id(class='form-control') }}
+                    
+                        {{ form.submit(class='btn btn-primary my-1') }}
+                        </form>
+                        
+                        <script>
+                            // Grab Select elements
+                            let node_select = document.getElementById('node');
+                            let vm_id_select = document.getElementById('vm_id');
+
+                            node_select.onchange = function() {
+                                node = node_select.value;
+                                // Fetch VMs for node
+                                fetch('/vms/' + node).then(function(response) {
+                                    response.json().then(function(data) {
+                                        
+                                        let optionHTML = '';
+                                        // Set option tag values for each vm in node    
+                                        for (let vm of data.vms) {
+                                            optionHTML += '<option value="' + vm.id + '">' + vm.name + ' (' + vm.id + ')</option>';
+                                            
+                                        }
+                                            // replace 
+                                            vm_id_select.innerHTML = optionHTML;
+                                        });
+                                });
+                            }
+                        </script>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

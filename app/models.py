@@ -28,6 +28,7 @@ class VirtualMachine(db.Model):
     vm_id = db.Column(db.Integer, index=True)
     node = db.Column(db.String(120))
     name = db.Column(db.String(120), index=True)
+    snapshot = db.Column(db.String(120))
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
     creator = db.Column(db.Integer, db.ForeignKey('user.id'))
 

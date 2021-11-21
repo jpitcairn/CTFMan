@@ -1,9 +1,9 @@
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, jsonify
 from app import app, forms, db
-from app.hypervisor import get_virtual_machines, start_virtual_machine, shutdown_virtual_machine, reset_virtual_machine
-from app.forms import EmptyForm, LoginForm, RegisterForm
+from app.hypervisor import get_node_virtual_machines, get_virtual_machines, start_virtual_machine, shutdown_virtual_machine, reset_virtual_machine
+from app.forms import AddVMForm, EmptyForm, LoginForm, RegisterForm
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User
+from app.models import User, VirtualMachine
 from werkzeug.urls import url_parse
 
 # Index page routing
@@ -12,7 +12,7 @@ from werkzeug.urls import url_parse
 @login_required
 def home():
     form = EmptyForm()
-    virtual_machines = get_virtual_machines()
+    virtual_machines = VirtualMachine.query.order_by(VirtualMachine.id.desc())
     return render_template('index.html', title='Home', slug='Control VMs', virtual_machines=virtual_machines, form=form)
 
 # Login
@@ -92,9 +92,31 @@ def reset_vm(vmid):
 # Admin Section
 
 # Users View
-
 @app.route('/admin/users')
 @login_required
 def admin_users():
     users = User.query.order_by(User.id.desc())
     return render_template('admin/users.html', title='Home', slug='Control VMs', users=users)
+
+# VM's View
+@app.route('/admin/vms', methods=['GET', 'POST'])
+@login_required
+def admin_vms():
+    form = AddVMForm()
+    virtual_machines = VirtualMachine.query.order_by(VirtualMachine.id.desc())
+    form.vm_id.choices = [(vm['id'], vm['name'] + " (" + str(vm['id']) + ")" ) for vm in get_node_virtual_machines()]
+    
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            vm = VirtualMachine(vm_id=form.vm_id.data, node=form.node.data)
+            db.session.add(vm)
+            db.session.commit()
+        flash('VM Added Successfully')
+    
+    return render_template('admin/vms.html', title="Virtual Machines", slug="Manage CTF VM's", form=form, virtual_machines=virtual_machines)
+
+@app.route('/vms/<node>')
+@login_required
+def node_vms(node):
+    vms = get_node_virtual_machines(node)
+    return jsonify({'vms' : vms})
