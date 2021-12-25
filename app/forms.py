@@ -35,3 +35,9 @@ class AddVMForm(FlaskForm):
     vm_id = SelectField('Virtual Machine', choices=[])
     submit = SubmitField('Add VM')
 
+class EditVMForm(FlaskForm):
+    node = SelectField('Hypervisor Node', choices=get_hypervisor_nodes())
+    vm_id = SelectField('Virtual Machine', choices=[])
+    snapshot = StringField('Snapshot')
+    submit = SubmitField('Edit VM')
+

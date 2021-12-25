@@ -1,7 +1,7 @@
 from flask import render_template, flash, redirect, url_for, request, jsonify
 from app import app, forms, db
 from app.hypervisor import get_node_virtual_machines, get_virtual_machines, start_virtual_machine, shutdown_virtual_machine, reset_virtual_machine
-from app.forms import AddVMForm, EmptyForm, LoginForm, RegisterForm
+from app.forms import AddVMForm, EditVMForm, EmptyForm, LoginForm, RegisterForm
 from flask_login import current_user, login_user, logout_user, login_required
 from app.models import User, VirtualMachine
 from werkzeug.urls import url_parse
@@ -99,7 +99,7 @@ def admin_users():
     return render_template('admin/users.html', title='Home', slug='Control VMs', users=users)
 
 # VM's View
-@app.route('/admin/vms', methods=['GET', 'POST'])
+@app.route('/admin/vm', methods=['GET', 'POST'])
 @login_required
 def admin_vms():
     form = AddVMForm()
@@ -114,6 +114,19 @@ def admin_vms():
         flash('VM Added Successfully')
     
     return render_template('admin/vms.html', title="Virtual Machines", slug="Manage CTF VM's", form=form, virtual_machines=virtual_machines)
+
+@app.route('/admin/vm/<id>/edit', methods=['GET', 'POST'])
+def admin_edit_vm(id):
+    form = EditVMForm()
+    vm = VirtualMachine.query.filter_by(id=id).first_or_404()
+    form.validate_on_submit():
+    
+
+
+
+    render_template('admin/edit_vm.html', vm)
+
+# API Routes 
 
 @app.route('/vms/<node>')
 @login_required
